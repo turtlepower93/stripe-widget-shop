@@ -30,13 +30,11 @@ export default function NewOrderPage() {
       //Get all Widgets from the database
       const widgets = await widgetsAPI.getAll();
       setAllWidgets(widgets);
-      console.log(widgets)
 
       //grabs labels for category navigation
       const grabbedLabels = [];
       widgets.forEach((widget,idx) => {
         if (!grabbedLabels.includes(widget.category.name)) {
-          console.log(widget.category.name)
           grabbedLabels.push(widget.category.name);
         }
       });

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { getUser } from '../../utilities/users-service';
 import './App.css';
@@ -9,21 +9,42 @@ import NewOrderPage from '../NewOrderPage/NewOrderPage';
 import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
 import MenuAppBar from '../../components/MenuAppBar/MenuAppBar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
-
+import * as Orders from '../../utilities/orders-api'
 
 const theme = createMuiTheme();
 
 export default function App() {
   const [user, setUser] = useState(getUser());
+  const [cart, setCart] = useState();
 
-  console.log(theme)
+  useEffect(() => {
+    if (user) {
+      async function getCart() {
+        const currentCart = await Orders.getCart();
+        setCart(currentCart);
+      }
+      getCart();
+    }
+  },[user]);
+
+
+  const changeWidgetQuantity = async (widgetId, newQuantity) => {
+    const updatedCart = await Orders.addToCart(widgetId, newQuantity)
+    setCart(updatedCart);
+  }
+
+  const checkOrders = async (widgetId, newQuantity) => {
+    const orders = await Orders.getConfirmation()
+    console.log(orders); 
+  }
 
   return (
     <MuiThemeProvider theme={theme}>
       <main className="App">
+        <button onClick={() => checkOrders()} >ORDERS</button>
+        <button onClick={() => changeWidgetQuantity("605fbeb4a019b62d481165ae",15)} >I AM BUTTON</button>
         { user ?
             <>
-              {/* <NavBar user={user} setUser={setUser} /> */}
               <MenuAppBar user={user} setUser={setUser} />
               <Switch>
                 <Route path="/aboutus">

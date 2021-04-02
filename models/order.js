@@ -40,7 +40,7 @@ orderSchema.virtual('orderId').get(function() {
 });
 
 orderSchema.statics.getUserOrders = async function(userId)  {
-    return this.find({ user: userId, isPaid: true}).sort('-updatedAt');
+    return this.find({ user: userId, isPaid: true}).sort('-updatedAt').lean();
 };
 
 orderSchema.statics.getCart = async function(userId) {
@@ -51,13 +51,14 @@ orderSchema.statics.getCart = async function(userId) {
     );
 }
 
-orderSchema.methods.addWidgetToCart = async function(widgetId) {
+orderSchema.methods.addWidgetToCart = async function(widgetId, widgetQuantity) {
     const cart = this;
     const lineWidget = cart.lineWidgets.find(lineWidget => lineWidget.widget._id.equals(widgetId));
     if(lineWidget) {
-        lineWidget.quantity += 1;
+        lineWidget.quantity = widgetQuantity;
     } else {
         const widget = await mongoose.model('Widget').findById(widgetId);
+        widget.quantity = widgetQuantity;
         cart.lineWidgets.push({ widget });
     }
     return cart.save();
@@ -73,6 +74,5 @@ orderSchema.methods.setWidgetQuantity = async function(widgetId, newQuantity) {
     }
     return cart.save();
 }
-
 
 module.exports = mongoose.model('Order', orderSchema);

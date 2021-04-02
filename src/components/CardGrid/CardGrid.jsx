@@ -22,15 +22,13 @@ const useStyles = makeStyles({
     },
     addToCart: {
         display:"flex",
-        justifyContent:"space-around"
+        justifyContent:"space-around",
     }
 })
 
 export default function CardGrid({widgets}) {
 
     const classes = useStyles();
-
-    console.log(widgets)
 
     const widgetsDisplayed = widgets.map((w) => {
         return (
@@ -53,36 +51,36 @@ export default function CardGrid({widgets}) {
                         </CardActionArea>
                         <CardContent>
                             <Typography
-                                // align="center"
+                                align="center"
                                 color="primary"
                                 variant="h4"
                                 >
                                 {w.price}.00$
                             </Typography>
                         </CardContent>
-                        <CardActions className={classes.addToCart}>
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                className={classes.addButton}
-                            >
-                                Add To Cart
-                            </Button>
-                            <Select
-                                defaultValue="1"
-                                color="primary"
-
-                            >
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
-                                <MenuItem value={4}>4</MenuItem>
-                                <MenuItem value={5}>5</MenuItem>
-                                <MenuItem value={6}>6</MenuItem>
-                                <MenuItem value={7}>7</MenuItem>
-                                <MenuItem value={8}>8</MenuItem>
-                            </Select>
-                        </CardActions>
+                            <CardActions className={classes.addToCart}>
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    className={classes.addButton}
+                                >
+                                    Add To Cart
+                                </Button>
+                                <Select
+                                    variant='outlined'
+                                    defaultValue="1"
+                                    color="primary"
+                                >
+                                    <MenuItem value={1}>1</MenuItem>
+                                    <MenuItem value={2}>2</MenuItem>
+                                    <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem>
+                                    <MenuItem value={5}>5</MenuItem>
+                                    <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem>
+                                    <MenuItem value={8}>8</MenuItem>
+                                </Select>
+                            </CardActions>
                 </Card>
             </Grid>
         )
