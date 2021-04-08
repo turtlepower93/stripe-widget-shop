@@ -29,6 +29,8 @@ export default function App() {
 
 
   const changeWidgetQuantity = async (widgetId, newQuantity) => {
+    console.log(widgetId);
+    console.log(newQuantity);
     const updatedCart = await Orders.addToCart(widgetId, newQuantity)
     setCart(updatedCart);
   }
@@ -41,8 +43,6 @@ export default function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <main className="App">
-        <button onClick={() => checkOrders()} >ORDERS</button>
-        <button onClick={() => changeWidgetQuantity("605fbeb4a019b62d481165ae",15)} >I AM BUTTON</button>
         { user ?
             <>
               <MenuAppBar user={user} setUser={setUser} />
@@ -54,10 +54,10 @@ export default function App() {
                   <HomePage />
                 </Route>
                 <Route path="/orders/new">
-                  <NewOrderPage />
+                  <NewOrderPage changeWidgetQuantity={changeWidgetQuantity} />
                 </Route>
                 <Route path="/orders">
-                  <OrderHistoryPage />
+                  <OrderHistoryPage  />
                 </Route>
                 <Redirect to="/homepage" />
               </Switch>

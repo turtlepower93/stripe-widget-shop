@@ -6,7 +6,7 @@ import AppBar from '@material-ui/core/AppBar'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container'
 import CardGrid from '../../components/CardGrid/CardGrid'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import * as widgetsAPI from '../../utilities/widgets-api'
 
 const useStyles = makeStyles((theme) => ({
@@ -15,14 +15,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function NewOrderPage() {
+export default function NewOrderPage({changeWidgetQuantity}) {
   const classes = useStyles();
   const [allWidgets, setAllWidgets] = useState();
   const [allLabels, setAllLabels] = useState();
   const [currentTab, setCurrentTab] = useState(0);
   const [currentWidgets, setCurrentWidgets] = useState([]);
   const [tabLabels, setTabLabels] = useState([]);
-  const tabRef = useRef(currentTab);
+  const [resetSelectValue, setResetSelectValue] = useState(false);
 
   useEffect(() => {
     async function getWidgets() {
@@ -52,23 +52,23 @@ export default function NewOrderPage() {
         displayWidgets.push(w);
       })
       setCurrentWidgets(displayWidgets);
-
     };
     getWidgets();
   },[]);
 
-  function handleChange(evt, newValue) {
+  function handleTabChange(evt, newValue) {
     setCurrentTab(newValue);
-    const changedWidgets = allWidgets.filter((w) => {
+    const widgetsInCategory = allWidgets.filter((w) => {
       return w.category.name === allLabels[newValue];
     }) 
-    setCurrentWidgets(changedWidgets);
+    setCurrentWidgets(widgetsInCategory);
+    setResetSelectValue(true);
   };
 
   return (
     <>
     <AppBar gutterBottom position="static">
-      <Tabs centered onChange={handleChange} value={currentTab} >
+      <Tabs centered onChange={handleTabChange} value={currentTab} >
         {tabLabels}
       </Tabs>
     </AppBar>
@@ -79,7 +79,7 @@ export default function NewOrderPage() {
             Widgets, Get your widgets here!
           </Typography>
         </Box>
-        <CardGrid widgets={currentWidgets}  />
+        <CardGrid widgets={currentWidgets} resetSelectValue={resetSelectValue} setResetSelectValue={setResetSelectValue} changeWidgetQuantity={changeWidgetQuantity} />
       </Container>
     </div>
   </>  

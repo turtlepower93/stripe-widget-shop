@@ -51,7 +51,7 @@ async function checkout(req, res) {
         const cart = await Order.getCart(req.user._id);
         cart.isPaid = true;
         await cart.save();
-        res.status(200).json(cart);
+        res.status(200).json(cart.lineWidgets);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

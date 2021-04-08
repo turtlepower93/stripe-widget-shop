@@ -58,8 +58,12 @@ orderSchema.methods.addWidgetToCart = async function(widgetId, widgetQuantity) {
         lineWidget.quantity = widgetQuantity;
     } else {
         const widget = await mongoose.model('Widget').findById(widgetId);
-        widget.quantity = widgetQuantity;
+        console.log(cart)
+        cart.quantity = widgetQuantity;
+        console.log('Second Time Widget ', widget)
         cart.lineWidgets.push({ widget });
+        const newWidgets = cart.lineWidgets.find(lineWidget => lineWidget.widget._id.equals(widgetId));
+        newWidgets.quantity = widgetQuantity;
     }
     return cart.save();
 }
